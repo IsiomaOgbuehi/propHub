@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground } from 'react-native';
+import { StyleSheet, View, ImageBackground, Dimensions } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import RegisterScreen2 from '../../src/screens/Auth/register/authDetails/Index';
 import { useLocalSearchParams } from 'expo-router';
@@ -27,15 +27,15 @@ export default AuthDetailsPage;
 
 const styles = StyleSheet.create({
   image: {
-    height: '100%',
     resizeMode: 'cover',
-    width: '112%',
     position: 'absolute',
     top: 0,
-    left: 0
+    left: 0,
+    width: "112%",
+    height: Dimensions.get('window').height + 50,
   },
   imageChild: {
-    backgroundColor: 'rgba(0,0,0,0.89)',
+    backgroundColor: 'rgba(0,0,0,0.8)',
     flex: 1,
   },
   circle: {

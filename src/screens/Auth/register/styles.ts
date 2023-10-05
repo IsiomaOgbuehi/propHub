@@ -1,37 +1,48 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform, StatusBar  } from "react-native";
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: "90%",
         alignItems: "flex-start",
-        marginBottom: 20,
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight ? StatusBar.currentHeight + 50 : 0 : 0,
     },
     header: {
-        marginTop: 80
-    },
-    headerPage2: {
-        marginTop: 40
+        marginTop: 50
     },
     h1: {
-        fontSize: 20,
         color: '#fff',
-        marginBottom: 10,
         textTransform: "uppercase",
-        fontWeight: '600'
+        fontWeight: '600',
+        marginBottom: 10,
+        ...Platform.select({
+            ios: {
+                fontSize: 28,
+            },
+            android: {
+                fontSize: 20,
+            },
+        }),
     },
     h2: {
-        fontSize: 28,
         color: '#fff',        
         textTransform: "uppercase",
-        fontWeight: '500'
+        fontWeight: '500',
+        ...Platform.select({
+            ios: {
+                fontSize: 28,
+            },
+            android: {
+                fontSize: 20,
+            },
+        }),
     },
     label: {
         alignSelf: 'flex-start',
         color: "#aaa",
         fontWeight: "500",
-        marginBottom: 10,
+        marginBottom: Platform.OS === 'ios' ? 10 : 0,
     },
     inputField: {
         borderColor: '#ccc',
@@ -63,9 +74,10 @@ const styles = StyleSheet.create({
     },
     signIn: {
         alignSelf: 'center',
-        marginBottom: 10,
+        marginBottom: 30,
     }
-})
+
+});
 
 const pickerOptions = StyleSheet.create({
     inputIOS: {
@@ -76,7 +88,6 @@ const pickerOptions = StyleSheet.create({
         color: '#fff',
         paddingBottom: 5,
         fontWeight: "500",
-        alignSelf: 'flex-end',
         width: '100%',
         marginBottom: 50,
     },
@@ -89,8 +100,8 @@ const pickerOptions = StyleSheet.create({
         paddingBottom: 5,
         fontWeight: "500",
         width: '100%',
-        marginBottom: 50
+        marginBottom: 50,
     },
-});
+})
 
 export {styles, pickerOptions}
