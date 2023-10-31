@@ -1,4 +1,4 @@
-import { View, Text, Pressable, TextInput, SafeAreaView, Platform } from 'react-native'
+import { View, Text, Pressable, TextInput, SafeAreaView, Platform, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 import RNPickerSelect from "react-native-picker-select";
@@ -7,18 +7,21 @@ import { useFonts, Exo2_600SemiBold } from '@expo-google-fonts/exo-2';
 import { Ionicons } from '@expo/vector-icons';
 import { NigeriaState, getNigeriaStates } from 'geo-ng';
 import { AgentPage3, State } from '../types';
+import { useAuth } from '../../../../../context/AuthContext';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const RegisterScreen3 = ({ data }: any) => {
-
+  const { register } = useAuth()
   const [formData, setFormData] = useState<AgentPage3>({
     ...data,
     businessAddress: '',
     lga: '',
     state: '',
-    agentType: 'business'
+    agentType: null
   })
   const [states, setStates] = useState<State[]>([]);
   const [lga, setLgas] = useState<State[]>([]);
+  const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState({
     value: '',
     type: ''
@@ -42,7 +45,7 @@ const RegisterScreen3 = ({ data }: any) => {
     });
   }
 
-  const validateForm = () => {
+  const validateForm = async () => {
     if (formData.businessAddress == '') {
       setErrorType('businessAddress', 'Please enter a valid address');
     }
@@ -59,7 +62,19 @@ const RegisterScreen3 = ({ data }: any) => {
 
     else {
       setErrorType('', '')
-      // validate form
+      setLoading(true);
+      try {
+        const message = await register?.(formData)
+        if (message?.message != 'Agent registered successfully!') {
+          Alert.alert(
+            'Error',
+            message?.message,
+            [{ text: 'Cancel' }]
+          )
+        }
+      } finally {
+        setLoading(false);
+      }
     }
     setTimeout(() => {
       setErrorType('', '')
@@ -110,16 +125,17 @@ const RegisterScreen3 = ({ data }: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Spinner visible={loading} />
 
-      <View style={styles.headerPage2}>
+      <View style={styles.header}>
         <Text style={[styles.h1, { fontFamily: 'Exo2_600SemiBold' }]}>welcome</Text>
         <Text style={[styles.h2, { fontFamily: 'Exo2_600SemiBold' }]}>noxa real estate</Text>
       </View>
 
       <KeyboardAvoidingView
         style={{ width: '100%' }}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === "ios" ? -100 : 0}>
+        behavior={'padding'}
+        keyboardVerticalOffset={-100}>
         <Text style={styles.label}>Business Address</Text>
         <TextInput
           value={formData.businessAddress}
@@ -134,7 +150,9 @@ const RegisterScreen3 = ({ data }: any) => {
           onValueChange={(value: any) => setData('state', value)}
           style={pickerOptions}
           items={states}
-          Icon={() => { return <Ionicons name="chevron-down" size={20} color="#fff" /> }}
+          useNativeAndroidPickerStyle={false}
+          Icon={() => {
+            return <Ionicons name="chevron-down" size={20} color="#fff" /> }}
           darkTheme={true}
         />
         {error.type == 'state' && <Text style={{ color: '#ffc107', marginTop: -30, marginBottom: 10 }}>{error.value}</Text>}
@@ -143,9 +161,10 @@ const RegisterScreen3 = ({ data }: any) => {
           onValueChange={(value: any) => setData('lga', value)}
           style={pickerOptions}
           items={lga || []}
-          Icon={() => { return <Ionicons name="chevron-down" size={20} color="#fff" /> }
-          }
+          Icon={() => {
+            return <Ionicons name="chevron-down" size={20} color="#fff" /> }}
           darkTheme={true}
+          useNativeAndroidPickerStyle={false}
         />
         {error.type == 'lga' && <Text style={{ color: '#ffc107', marginTop: -30, marginBottom: 10 }}>{error.value}</Text>}
         <RNPickerSelect
@@ -157,10 +176,13 @@ const RegisterScreen3 = ({ data }: any) => {
             { label: "Artisan", value: "artisan" },
             { label: "Advertising", value: "advertising" }
           ]}
-          Icon={() => { return <Ionicons name="chevron-down" size={20} color="#fff" /> }}
+          useNativeAndroidPickerStyle={false}
+          Icon={() => {
+            return <Ionicons name="chevron-down" size={20} color="#fff" /> }}
           darkTheme={true}
         />
         {error.type == 'agentType' && <Text style={{ color: '#ffc107', marginTop: -30, marginBottom: 10 }}>{error.value}</Text>}
+
         <Pressable style={[styles.button, { marginBottom: 40 }]} onPress={validateForm}>
           <Text style={styles.buttonValue}>Submit</Text>
         </Pressable>

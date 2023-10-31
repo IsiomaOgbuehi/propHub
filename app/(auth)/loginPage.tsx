@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { View, StyleSheet, ImageBackground } from 'react-native';
+import { View, StyleSheet, ImageBackground, Dimensions } from 'react-native';
 import LoginScreen from '../../src/screens/Auth/login/Login';
 import { StatusBar } from 'expo-status-bar';
 
@@ -27,15 +27,15 @@ export default LoginPage;
 
 const styles = StyleSheet.create({
   image: {
-    height: '100%',
     resizeMode: 'cover',
-    width: '112%',
     position: 'absolute',
     top: 0,
-    left: 0
+    left: 0,
+    width: "112%",
+    height: Dimensions.get('window').height + 50,
   },
   imageChild: {
-    backgroundColor: 'rgba(0,0,0,0.89)',
+    backgroundColor: 'rgba(0,0,0,0.8)',
     flex: 1,
   },
   circle: {

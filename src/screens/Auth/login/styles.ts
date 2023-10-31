@@ -1,21 +1,24 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "90%",
     alignItems: "center",
-    marginBottom: 50,
+    marginBottom: Platform.OS === 'ios' ? 20 : 10,
     justifyContent: "space-between"
+  },
+  icon: {
+    marginTop: Platform.OS === 'ios' ? 0 : 40, 
+    marginBottom: 40
   },
   header: {
     marginTop: 40,
     alignItems: "center",
   },
   h1: {
-      fontSize: 20,
+      fontSize: Platform.OS === 'ios' ? 30 : 20,
       color: '#fff',
-      marginBottom: 10,
       textTransform: "uppercase",
       fontWeight: '600'
   },
@@ -37,7 +40,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   margin: {
-      marginBottom: 20
+      marginBottom: Platform.OS === 'ios' ? 30 : 20
   },
   button: {
     width: '98%',
@@ -55,7 +58,7 @@ const styles = StyleSheet.create({
   },
   signIn: {
       alignSelf: 'center',
-      marginBottom: 10,
+      marginBottom: 30,
   }
 });
 

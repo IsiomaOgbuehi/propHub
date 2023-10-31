@@ -8,6 +8,7 @@ function RootLayoutNav() {
   const segments = useSegments();
 
   useEffect(() => {
+    console.log(user, initialized)
     if (!initialized) return;
 
     const inTabsGroup = segments[0] === '(tabs)';

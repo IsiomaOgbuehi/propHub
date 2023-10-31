@@ -65,19 +65,22 @@ const AuthDetailsScreen = ({ data }: any) => {
     return
   };
 
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
+
 
   return (
     <SafeAreaView style={styles.container}>
 
-      <View style={styles.headerPage2}>
+      <View style={styles.header}>
         <Text style={[styles.h1, { fontFamily: 'Exo2_600SemiBold' }]}>welcome</Text>
         <Text style={[styles.h2, { fontFamily: 'Exo2_600SemiBold' }]}>probhub real estate</Text>
       </View>
-
       <KeyboardAvoidingView
         style={{ width: '100%' }}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === "ios" ? -100 : 0}>
+        behavior={'padding'}
+        keyboardVerticalOffset={-100}>
         <Text style={styles.label}>Email Address</Text>
         <TextInput
           value={formData.email}
@@ -121,9 +124,11 @@ const AuthDetailsScreen = ({ data }: any) => {
         />
 
         {error.type == 'confirmPassword' && <Text style={{ color: '#ffc107', marginTop: -30, marginBottom: 10 }}>{error.value}</Text>}
+
         <Pressable style={[styles.button, { marginBottom: 40 }]} onPress={validateForm}>
           <Text style={styles.buttonValue}>Next</Text>
         </Pressable>
+
       </KeyboardAvoidingView>
 
     </SafeAreaView>
